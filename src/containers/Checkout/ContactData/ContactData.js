@@ -38,8 +38,9 @@ class ContactData extends Component {
             delieveryMethod: 'fastest'    
         };
 
-        axios.post('/orders.json', order)
+        axios.post('https://react-my-burger-1bb41.firebaseio.com/orders.json', order)
             .then(response => {
+                console.log("Success");
                 console.log(response);
                 this.setState({
                     loading: false

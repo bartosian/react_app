@@ -8,6 +8,8 @@ import classes from './ContactData.css';
 
 import axios from '../../../axios-orders';
 import Input from '../../../components/UI/Input/Input';
+import withErrorhandler from '../../../hoc/withErrorHandler/witherrorHandler';
+import * as actions from '../../../store/actions/index';
 
 class ContactData extends Component {
     state = {
@@ -98,10 +100,6 @@ class ContactData extends Component {
     orderHandler = (event) => {
         event.preventDefault();
 
-        this.setState({
-            loading: true
-        });
-
         const formData = {};
 
         for (let formElementIdentifier in this.state.orderForm) {
@@ -114,21 +112,7 @@ class ContactData extends Component {
             orderData: formData
         };
 
-        axios.post('https://react-my-burger-1bb41.firebaseio.com/orders.json', order)
-            .then(response => {
-                console.log("Success");
-                console.log(response);
-                this.setState({
-                    loading: false
-                });
-                this.props.history.push('/');
-            })
-            .catch(error => { 
-                console.log(error)
-                this.setState({
-                    loading: false
-                });
-            });
+        this.props.onOrderBurger(order);
         
     }
 
@@ -220,4 +204,8 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => {
+    onOrderBurger: (orderData) => dispatch(actions.purchaseBurgerStart(orderData))
+};
+
+export default connect(mapStateToProps)(withErrorhandler(ContactData, axios));

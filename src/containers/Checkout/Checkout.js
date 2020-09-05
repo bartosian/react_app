@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import CheckoutSummary  from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
+import * as actions from '../../store/actions/index';
 
 
 class Checkout extends Component {
-
     checkoutCancelled = () => {
         this.props.history.goBack();
     }
@@ -17,22 +17,30 @@ class Checkout extends Component {
     }
 
     render () {
-        return (
+        let summary = <Redirect to="/"/>;
+        if (this.props.ings) {
+            const purchaseRedirect =  this.props.purchased ? <Redirect to="/" /> : null;
+            summary = (
             <div>
+                {purchaseRedirect}
                 <CheckoutSummary 
-                    ingredients={this.props.ings}
-                    checkoutCancelled={this.checkoutCancelled}
-                    checkoutContinued={this.checkoutContinued}/>
+                ingredients={this.props.ings}
+                checkoutCancelled={this.checkoutCancelled}
+                checkoutContinued={this.checkoutContinued}/>
                 <Route path={this.props.match.path + '/contact-data'}
-                       component={ContactData} />    
-            </div>
-        );
+                       component={ContactData} />
+            </div> 
+            );
+        }
+
+        return summary;
     }
 }
 
-const mapStateToProps =state => {
+const mapStateToProps = state => {
     return {
-        ings: state.ingredients
+        ings: state.burgerBuilder.ingredients,
+        purchased: state.order.purchased
     };
 };
 

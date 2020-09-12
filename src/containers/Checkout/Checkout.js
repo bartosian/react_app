@@ -6,34 +6,32 @@ import CheckoutSummary  from '../../components/Order/CheckoutSummary/CheckoutSum
 import ContactData from './ContactData/ContactData';
 
 
-class Checkout extends Component {
-    checkoutCancelled = () => {
-        this.props.history.goBack();
+const checkout = props => {
+    const checkoutCancelled = () => {
+        props.history.goBack();
     }
 
-    checkoutContinued = () => {
-        this.props.history.replace('/checkout/contact-data');
+    const checkoutContinued = () => {
+        props.history.replace('/checkout/contact-data');
     }
 
-    render () {
         let summary = <Redirect to="/"/>;
-        if (this.props.ings) {
-            const purchaseRedirect =  this.props.purchased ? <Redirect to="/" /> : null;
+        if (props.ings) {
+            const purchaseRedirect =  props.purchased ? <Redirect to="/" /> : null;
             summary = (
             <div>
                 {purchaseRedirect}
                 <CheckoutSummary 
-                ingredients={this.props.ings}
-                checkoutCancelled={this.checkoutCancelled}
-                checkoutContinued={this.checkoutContinued}/>
-                <Route path={this.props.match.path + '/contact-data'}
+                ingredients={props.ings}
+                checkoutCancelled={checkoutCancelled}
+                checkoutContinued={checkoutContinued}/>
+                <Route path={props.match.path + '/contact-data'}
                        component={ContactData} />
             </div> 
             );
         }
 
         return summary;
-    }
 }
 
 const mapStateToProps = state => {
@@ -43,4 +41,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps)(Checkout);
+export default connect(mapStateToProps)(checkout);

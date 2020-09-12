@@ -8,7 +8,6 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import withErrorHandler from '../../hoc/withErrorHandler/witherrorHandler';
 import * as burgerBuilderActions from '../../store/actions';
 
 export class BurgerBuilder extends Component {
@@ -123,4 +122,4 @@ const mapDispatchToProps = dispatch =>  {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(BurgerBuilder);
